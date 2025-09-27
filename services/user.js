@@ -2,6 +2,7 @@ import { prisma } from "../config/database.js"
 
 export const createUser = async (req, res) => {
     const data = req.body
+    // console.log(data)
 
     if (!data.username || !data.email || !data.dob) {
         res.json({
@@ -13,8 +14,8 @@ export const createUser = async (req, res) => {
         const exist = await prisma.user.findFirst({
             where: {
                 OR: [
-                    { username: { contains: data.username } },
-                    { email: { contains: data.email } }
+                    { username: { equals: data.username.toLowerCase() } },
+                    { email: { equals: data.email.toLowerCase() } }
                 ]
             }
         })
@@ -31,17 +32,26 @@ export const createUser = async (req, res) => {
             if (!sucess) {
                 res.json({
                     message: "An error occured while creating user"
-                })
+                }).status(500)
             }
 
             res.json({
+                status: "success",
                 message: "User created successfully"
             })
 
-        } else if (exist.username == data.username) {
-            res.redirect("/")
+        } else if (exist.username.toLowerCase() == data.username.toLowerCase()) {
+                res.json({
+                    status: "error",
+                    message: "Username already exists"
+                })
         } else {
-            res.redirect("/")
+            // console.log(exist.username)
+            // console.log(data.username)
+            res.json({
+                status: "error",
+                message: "Email already exists"
+            })
         }
     }
 
