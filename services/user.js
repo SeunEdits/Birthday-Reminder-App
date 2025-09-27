@@ -1,4 +1,4 @@
-import { prisma } from "../config/database.ts"
+import { prisma } from "../dist/config/database.js"
 
 export const createUser = async (req, res) => {
     const data = req.body
