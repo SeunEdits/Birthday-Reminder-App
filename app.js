@@ -1,18 +1,17 @@
 import express from "express";
 import { userRoutes } from "./routes/user.js";
-import bodyParser from "body-parser";
-import fs from "fs"
 import { fileURLToPath } from "url";
 import { dirname, join } from "path"
 import * as nodemailer from "nodemailer";
 import { CronJob } from 'cron';
 import * as schedule from "node-schedule";
 import { getCelebrants } from './services/user.js';
-import { get } from 'http';
+import { configDotenv } from "dotenv";
 
+configDotenv();
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
     const __filename = fileURLToPath(import.meta.url)
     const __dirname = dirname(__filename)
@@ -23,10 +22,14 @@ app.use(express.json());
 
 app.use(express.urlencoded({ extended: true }));
 
-// Use user routes
-app.use( express.static(join(__dirname, 'public')));
+app.use('/css', express.static(join(__dirname, 'views/css')));
+// Set EJS as the view engine
+app.set('view engine', 'ejs');
+app.set('views', join(__dirname, 'views'));
 
-app.use('/user', userRoutes)
+// app.use(express.static(join(__dirname, 'public')));
+
+app.use('/user', userRoutes);
 
 
 schedule.scheduleJob('0 7 * * *', async () => {
@@ -62,12 +65,12 @@ schedule.scheduleJob('0 7 * * *', async () => {
 
 })
 
-// Sample route
-
-
-
+// Render the EJS form at root
+app.get('/', (req, res) => {
+    res.render('index');
+});
 
 // Start the server
 app.listen(port, () => {
-  console.log(`Server is running at http://localhost:${port}`);
+    console.log(`Server is running at http://localhost:${port}`);
 });

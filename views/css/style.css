@@ -22,6 +22,7 @@ form {
 /* make the inputs have rounded corners and margin 5px margin bottomm and the labels should have 5px margin buttom */
 input {
     height: 40px;
+    min-width: 100%;
     border: 0;
     border-inline-start-color: #d4fc79;
     border-radius: 5px;
@@ -29,11 +30,11 @@ input {
 }
 
 label {
-    margin-bottom: 5px;
+    padding-bottom: 5px;
 }
 
 /* Style the submit button specifically */
-input[type="submit"] {
+button[type="submit"] {
     height: 52px; /* 1.5 times 40px */
     font-size: 1.5em;
     background: linear-gradient(135deg, #9ce943 0%, #7ff938 100%);
