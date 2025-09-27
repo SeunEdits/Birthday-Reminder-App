@@ -7,7 +7,7 @@ import { dirname, join } from "path"
 import * as nodemailer from "nodemailer";
 import { CronJob } from 'cron';
 import * as schedule from "node-schedule";
-import { getCelebrants } from './user.js';
+import { getCelebrants } from './services/user.js';
 import { get } from 'http';
 
 
